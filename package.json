@@ -1,0 +1,68 @@
+{
+  "name": "lodestar-prover",
+  "private": true,
+  "engines": {
+    "node": "^24.13.0"
+  },
+  "packageManager": "pnpm@10.24.0+sha512.01ff8ae71b4419903b65c60fb2dc9d34cf8bb6e06d03bde112ef38f7a34d6904c424ba66bea5cdcf12890230bf39f9580473140ed9c946fef328b6e5238a345a",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "clean": "rm -rf ./packages/*/lib ./packages/*/dist ./packages/*/*.tsbuildinfo",
+    "clean:nm": "rm -rf ./packages/*/node_modules ./node_modules",
+    "build": "pnpm -r build",
+    "build:bundle": "pnpm -r build:bundle",
+    "build:watch": "pnpm -r --parallel exec pnpm run build:watch",
+    "lint": "biome check",
+    "lint:fix": "pnpm lint --write",
+    "check-build": "pnpm -r check-build",
+    "check-bundle": "pnpm -r check-bundle",
+    "check-readme": "pnpm -r check-readme",
+    "check-types": "pnpm -r check-types",
+    "test": "pnpm -r --workspace-concurrency=1 run test",
+    "test:unit": "vitest run --project unit --project unit-minimal",
+    "test:browsers": "vitest run --project browser",
+    "test:e2e": "vitest run --project e2e --project e2e-mainnet",
+    "release:publish": "lerna publish from-package --yes --no-verify-access"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.2.0",
+    "@chainsafe/biomejs-config": "^1.0.0",
+    "@lerna-lite/cli": "^4.9.4",
+    "@lerna-lite/exec": "^4.9.4",
+    "@lerna-lite/publish": "^4.9.4",
+    "@lerna-lite/run": "^4.9.4",
+    "@lerna-lite/version": "^4.9.4",
+    "@lodestar/params": "^1.42.0",
+    "@types/node": "^24.10.1",
+    "@typescript/native-preview": "7.0.0-dev.20260303.1",
+    "@vitest/browser": "catalog:",
+    "@vitest/browser-playwright": "catalog:",
+    "@vitest/coverage-v8": "catalog:",
+    "bun-types": "^1.2.21",
+    "crypto-browserify": "^3.12.0",
+    "dotenv": "^16.4.5",
+    "https-browserify": "^1.0.0",
+    "path-browserify": "^1.0.0",
+    "playwright": "^1.56.1",
+    "pretty-format": "^29.7.0",
+    "process": "^0.11.10",
+    "rollup-plugin-visualizer": "^5.12.0",
+    "stream-browserify": "^3.0.0",
+    "stream-http": "^3.2.0",
+    "ts-node": "^11.0.0-beta.1",
+    "typescript": "^6.0.1-rc",
+    "vite": "^6.0.11",
+    "vite-plugin-dts": "^4.5.4",
+    "vite-plugin-node-polyfills": "^0.24.0",
+    "vite-plugin-top-level-await": "^1.6.0",
+    "vitest": "catalog:",
+    "vitest-when": "^0.9.0"
+  },
+  "resolutions": {
+    "dns-over-http-resolver": "^2.1.1",
+    "loupe": "^2.3.6",
+    "elliptic": ">=6.6.1"
+  }
+}
