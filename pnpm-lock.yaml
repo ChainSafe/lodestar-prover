@@ -141,10 +141,10 @@ importers:
         version: 1.4.0
       '@lodestar/api':
         specifier: ^1.42.0
-        version: 1.42.0(vitest@4.1.5(@types/node@24.12.2)(@vitest/browser-playwright@4.1.5)(@vitest/coverage-v8@4.1.5)(vite@6.4.2(@types/node@24.12.2)(yaml@2.8.4)))
+        version: 1.42.0(vitest@4.1.5)
       '@lodestar/config':
         specifier: ^1.42.0
-        version: 1.42.0(vitest@4.1.5(@types/node@24.12.2)(@vitest/browser-playwright@4.1.5)(@vitest/coverage-v8@4.1.5)(vite@6.4.2(@types/node@24.12.2)(yaml@2.8.4)))
+        version: 1.42.0(vitest@4.1.5)
       '@lodestar/params':
         specifier: ^1.42.0
         version: 1.42.0
@@ -166,7 +166,7 @@ importers:
         version: 10.1.0
       '@lodestar/state-transition':
         specifier: ^1.42.0
-        version: 1.42.0(vitest@4.1.5(@types/node@24.12.2)(@vitest/browser-playwright@4.1.5)(@vitest/coverage-v8@4.1.5)(vite@6.4.2(@types/node@24.12.2)(yaml@2.8.4)))
+        version: 1.42.0(vitest@4.1.5)
       '@types/qs':
         specifier: ^6.9.7
         version: 6.15.0
@@ -211,10 +211,10 @@ importers:
         version: 6.5.0
       '@lodestar/api':
         specifier: ^1.42.0
-        version: 1.42.0(vitest@4.1.5(@types/node@24.12.2)(@vitest/browser-playwright@4.1.5)(@vitest/coverage-v8@4.1.5)(vite@6.4.2(@types/node@24.12.2)(yaml@2.8.4)))
+        version: 1.42.0(vitest@4.1.5)
       '@lodestar/config':
         specifier: ^1.42.0
-        version: 1.42.0(vitest@4.1.5(@types/node@24.12.2)(@vitest/browser-playwright@4.1.5)(@vitest/coverage-v8@4.1.5)(vite@6.4.2(@types/node@24.12.2)(yaml@2.8.4)))
+        version: 1.42.0(vitest@4.1.5)
       '@lodestar/light-client':
         specifier: workspace:^
         version: link:../light-client
@@ -241,7 +241,7 @@ importers:
         version: 1.18.1
       js-yaml:
         specifier: ^4.1.0
-        version: 4.1.1
+        version: 4.2.0
       source-map-support:
         specifier: ^0.5.21
         version: 0.5.21
@@ -2830,8 +2830,8 @@ packages:
   js-tokens@10.0.0:
     resolution: {integrity: sha512-lM/UBzQmfJRo9ABXbPWemivdCW8V2G8FHaHdypQaIy523snUjog0W71ayWXTjiR+ixeMyVHN2XcpnTd/liPg/Q==}
 
-  js-yaml@4.1.1:
-    resolution: {integrity: sha512-qQKT4zQxXl8lLwBtHMWwaTcGfFOZviOJet3Oy/xmGk2gZH677CJM9EvtfdSkgWcATZhj/55JZ0rmy3myCT5lsA==}
+  js-yaml@4.2.0:
+    resolution: {integrity: sha512-ePWsvanv0DWuDRsW8dnt+R4jQ31SCRCQ7hhNcPXZPsoBZiemuZNYGf7adZdqX2D86j6rvKp3RpCxVTSb8WQlOw==}
     hasBin: true
 
   json-parse-even-better-errors@5.0.0:
@@ -5231,11 +5231,11 @@ snapshots:
       - babel-plugin-macros
       - conventional-commits-filter
 
-  '@lodestar/api@1.42.0(vitest@4.1.5(@types/node@24.12.2)(@vitest/browser-playwright@4.1.5)(@vitest/coverage-v8@4.1.5)(vite@6.4.2(@types/node@24.12.2)(yaml@2.8.4)))':
+  '@lodestar/api@1.42.0(vitest@4.1.5)':
     dependencies:
       '@chainsafe/persistent-merkle-tree': 1.2.5
       '@chainsafe/ssz': 1.4.0
-      '@lodestar/config': 1.42.0(vitest@4.1.5(@types/node@24.12.2)(@vitest/browser-playwright@4.1.5)(@vitest/coverage-v8@4.1.5)(vite@6.4.2(@types/node@24.12.2)(yaml@2.8.4)))
+      '@lodestar/config': 1.42.0(vitest@4.1.5)
       '@lodestar/params': 1.42.0
       '@lodestar/types': 1.42.0
       '@lodestar/utils': 1.42.0
@@ -5245,12 +5245,12 @@ snapshots:
       - '@vekexasia/bigint-uint8array'
       - vitest
 
-  '@lodestar/config@1.42.0(vitest@4.1.5(@types/node@24.12.2)(@vitest/browser-playwright@4.1.5)(@vitest/coverage-v8@4.1.5)(vite@6.4.2(@types/node@24.12.2)(yaml@2.8.4)))':
+  '@lodestar/config@1.42.0(vitest@4.1.5)':
     dependencies:
       '@chainsafe/as-sha256': 1.2.4
       '@chainsafe/ssz': 1.4.0
       '@lodestar/params': 1.42.0
-      '@lodestar/spec-test-util': 1.42.0(@chainsafe/ssz@1.4.0)(@lodestar/types@1.42.0)(vitest@4.1.5(@types/node@24.12.2)(@vitest/browser-playwright@4.1.5)(@vitest/coverage-v8@4.1.5)(vite@6.4.2(@types/node@24.12.2)(yaml@2.8.4)))
+      '@lodestar/spec-test-util': 1.42.0(@chainsafe/ssz@1.4.0)(@lodestar/types@1.42.0)(vitest@4.1.5)
       '@lodestar/types': 1.42.0
       '@lodestar/utils': 1.42.0
     transitivePeerDependencies:
@@ -5269,7 +5269,7 @@ snapshots:
 
   '@lodestar/params@1.42.0': {}
 
-  '@lodestar/spec-test-util@1.42.0(@chainsafe/ssz@1.4.0)(@lodestar/types@1.42.0)(vitest@4.1.5(@types/node@24.12.2)(@vitest/browser-playwright@4.1.5)(@vitest/coverage-v8@4.1.5)(vite@6.4.2(@types/node@24.12.2)(yaml@2.8.4)))':
+  '@lodestar/spec-test-util@1.42.0(@chainsafe/ssz@1.4.0)(@lodestar/types@1.42.0)(vitest@4.1.5)':
     dependencies:
       '@chainsafe/ssz': 1.4.0
       '@lodestar/types': 1.42.0
@@ -5280,7 +5280,7 @@ snapshots:
     transitivePeerDependencies:
       - '@vekexasia/bigint-uint8array'
 
-  '@lodestar/state-transition@1.42.0(vitest@4.1.5(@types/node@24.12.2)(@vitest/browser-playwright@4.1.5)(@vitest/coverage-v8@4.1.5)(vite@6.4.2(@types/node@24.12.2)(yaml@2.8.4)))':
+  '@lodestar/state-transition@1.42.0(vitest@4.1.5)':
     dependencies:
       '@chainsafe/as-sha256': 1.2.4
       '@chainsafe/blst': 2.2.0
@@ -5289,7 +5289,7 @@ snapshots:
       '@chainsafe/pubkey-index-map': 3.0.0
       '@chainsafe/ssz': 1.4.0
       '@chainsafe/swap-or-not-shuffle': 1.2.1
-      '@lodestar/config': 1.42.0(vitest@4.1.5(@types/node@24.12.2)(@vitest/browser-playwright@4.1.5)(@vitest/coverage-v8@4.1.5)(vite@6.4.2(@types/node@24.12.2)(yaml@2.8.4)))
+      '@lodestar/config': 1.42.0(vitest@4.1.5)
       '@lodestar/params': 1.42.0
       '@lodestar/types': 1.42.0
       '@lodestar/utils': 1.42.0
@@ -5310,7 +5310,7 @@ snapshots:
       '@vekexasia/bigint-buffer2': 1.1.1
       any-signal: 4.2.0
       case: 1.6.3
-      js-yaml: 4.1.1
+      js-yaml: 4.2.0
     transitivePeerDependencies:
       - '@vekexasia/bigint-uint8array'
 
@@ -7156,7 +7156,7 @@ snapshots:
 
   js-tokens@10.0.0: {}
 
-  js-yaml@4.1.1:
+  js-yaml@4.2.0:
     dependencies:
       argparse: 2.0.1
 
