@@ -20,9 +20,18 @@ catalog:
   "@vitest/coverage-v8": "^4.0.7"
 
 overrides:
-  dns-over-http-resolver": "^2.1.1"
-  loupe": "^2.3.6"
-  nan": "^2.19.0"
+  # gloas (ChainSafe/lodestar#9687): use bing/gloas-lc until a release containing it is published
+  "@lodestar/api": "github:ChainSafe/lodestar#bing/gloas-lc&path:packages/api"
+  "@lodestar/config": "github:ChainSafe/lodestar#bing/gloas-lc&path:packages/config"
+  "@lodestar/params": "github:ChainSafe/lodestar#bing/gloas-lc&path:packages/params"
+  "@lodestar/types": "github:ChainSafe/lodestar#bing/gloas-lc&path:packages/types"
+  "@lodestar/utils": "github:ChainSafe/lodestar#bing/gloas-lc&path:packages/utils"
+  "@lodestar/state-transition": "github:ChainSafe/lodestar#bing/gloas-lc&path:packages/state-transition"
+  "@chainsafe/lodestar-z": "^1.0.0"
+  "logform": "2.5.1"
+  "dns-over-http-resolver": "^2.1.1"
+  "loupe": "^2.3.6"
+  "nan": "^2.19.0"
   elliptic: ">=6.6.1"
 
 onlyBuiltDependencies:

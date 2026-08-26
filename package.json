@@ -11,6 +11,7 @@
   "scripts": {
     "clean": "rm -rf ./packages/*/lib ./packages/*/dist ./packages/*/*.tsbuildinfo",
     "clean:nm": "rm -rf ./packages/*/node_modules ./node_modules",
+    "postinstall": "node scripts/build_lodestar_git_dependencies.mjs",
     "build": "pnpm -r build",
     "build:bundle": "pnpm -r build:bundle",
     "build:watch": "pnpm -r --parallel exec pnpm run build:watch",
@@ -59,10 +60,5 @@
     "vite-plugin-top-level-await": "^1.6.0",
     "vitest": "catalog:",
     "vitest-when": "^0.9.0"
-  },
-  "resolutions": {
-    "dns-over-http-resolver": "^2.1.1",
-    "loupe": "^2.3.6",
-    "elliptic": ">=6.6.1"
   }
 }

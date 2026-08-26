@@ -3,6 +3,9 @@
   "compilerOptions": {
     "rootDir": "${configDir}",
     "paths": {
+      "#bytes": ["./packages/light-client/node_modules/@lodestar/utils/src/bytes/nodejs.ts"],
+      "@lodestar/logger": ["./packages/prover/node_modules/@lodestar/logger/lib/index.d.ts"],
+      "@lodestar/logger/*": ["./packages/prover/node_modules/@lodestar/logger/lib/*.d.ts"],
       "@lodestar/light-client": ["./packages/light-client/src/index.ts"],
       "@lodestar/light-client/spec": ["./packages/light-client/src/spec/index.ts"],
       "@lodestar/light-client/transport": ["./packages/light-client/src/transport/index.ts"],
