@@ -148,6 +148,9 @@ importers:
       '@lodestar/params':
         specifier: ^1.42.0
         version: 1.42.0
+      '@lodestar/state-transition':
+        specifier: ^1.42.0
+        version: 1.42.0(vitest@4.1.5(@types/node@24.12.2)(@vitest/browser-playwright@4.1.5)(@vitest/coverage-v8@4.1.5)(vite@6.4.2(@types/node@24.12.2)(yaml@2.8.4)))
       '@lodestar/types':
         specifier: ^1.42.0
         version: 1.42.0
@@ -164,9 +167,6 @@ importers:
       '@fastify/cors':
         specifier: ^10.0.1
         version: 10.1.0
-      '@lodestar/state-transition':
-        specifier: ^1.42.0
-        version: 1.42.0(vitest@4.1.5(@types/node@24.12.2)(@vitest/browser-playwright@4.1.5)(@vitest/coverage-v8@4.1.5)(vite@6.4.2(@types/node@24.12.2)(yaml@2.8.4)))
       '@types/qs':
         specifier: ^6.9.7
         version: 6.15.0
