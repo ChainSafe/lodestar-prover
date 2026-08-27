@@ -88,7 +88,7 @@ export async function verifyBlock({
   try {
     const blockNumber = payload.params[0];
     const executionPayload = await proofProvider.getExecutionPayload(blockNumber);
-    const block = await getELBlock(rpc, [blockNumber, true]); // Always request hydrated blocks as we need access to `transactions` details
+    const block = await getELBlock(rpc, [bufferToHex(executionPayload.blockHash), true]); // Always request hydrated blocks as we need access to `transactions` details
 
     // If response is not valid from the EL we don't need to verify it
     if (!block) return {data: block, valid: false};
