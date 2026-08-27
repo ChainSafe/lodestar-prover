@@ -1,9 +1,9 @@
 import {MockedObject, beforeEach, describe, expect, it, vi} from "vitest";
 import {when} from "vitest-when";
-import {ApiClient, ApiResponse, HttpStatusCode, routes} from "@lodestar/api";
+import {ApiClient, ApiResponse, Endpoint, HttpStatusCode, routes} from "@lodestar/api";
 import {Logger} from "@lodestar/logger";
 import {ForkName} from "@lodestar/params";
-import {ExecutionPayload, SignedBeaconBlock, capella} from "@lodestar/types";
+import {ExecutionPayload, SignedBeaconBlock, capella, gloas, ssz} from "@lodestar/types";
 import {hash, toHexString} from "@lodestar/utils";
 import {MAX_PAYLOAD_HISTORY} from "../../../src/constants.js";
 import {PayloadStore} from "../../../src/proof_provider/payload_store.js";
@@ -23,6 +23,38 @@ const buildLCHeader = ({slot, blockNumber}: {slot: number; blockNumber: number})
     beacon: {slot, stateRoot: createHash(`"beacon-state-root-${slot}`)},
     execution: buildPayload({blockNumber}),
   }) as unknown as capella.LightClientHeader;
+
+const buildGloasLCHeader = ({
+  slot,
+  blockHash,
+  parentRoot = createHash("parent-beacon-block"),
+}: {
+  slot: number;
+  blockHash: Uint8Array;
+  parentRoot?: Uint8Array;
+}): gloas.LightClientHeader => ({
+  ...ssz.gloas.LightClientHeader.defaultValue(),
+  beacon: {...ssz.phase0.BeaconBlockHeader.defaultValue(), slot, parentRoot},
+  executionBlockHash: blockHash,
+});
+
+const buildGloasEnvelopeResponse = ({
+  payload,
+  beaconBlockRoot,
+}: {
+  payload: ExecutionPayload;
+  beaconBlockRoot: Uint8Array;
+}): ApiResponse<routes.beacon.Endpoints["getSignedExecutionPayloadEnvelope"]> => {
+  const response = new Response(null, {status: HttpStatusCode.OK});
+  const apiResponse = new ApiResponse<routes.beacon.Endpoints["getSignedExecutionPayloadEnvelope"]>(
+    {} as any,
+    null,
+    response
+  );
+  apiResponse.value = () => ({message: {payload, beaconBlockRoot}}) as gloas.SignedExecutionPayloadEnvelope;
+  apiResponse.meta = () => ({version: ForkName.gloas, executionOptimistic: true, finalized: false});
+  return apiResponse;
+};
 
 const buildBlock = ({slot, blockNumber}: {slot: number; blockNumber: number}): SignedBeaconBlock =>
   ({
@@ -52,13 +84,22 @@ const buildBlockResponse = ({
   return apiResponse;
 };
 
+const buildNotFoundResponse = <E extends Endpoint>(): ApiResponse<E> =>
+  new ApiResponse<E>({} as any, null, new Response(null, {status: HttpStatusCode.NOT_FOUND}));
+
 describe("proof_provider/payload_store", () => {
   let api: ApiClient & {beacon: MockedObject<ApiClient["beacon"]>};
   let logger: Logger;
   let store: PayloadStore;
 
   beforeEach(() => {
-    api = {beacon: {getBlockV2: vi.fn()}} as unknown as ApiClient & {beacon: MockedObject<ApiClient["beacon"]>};
+    api = {
+      beacon: {
+        getBlockV2: vi.fn(),
+        getSignedExecutionPayloadEnvelope: vi.fn(),
+      },
+    } as unknown as ApiClient & {beacon: MockedObject<ApiClient["beacon"]>};
+    api.beacon.getBlockV2.mockResolvedValue(buildNotFoundResponse());
     logger = console as unknown as Logger;
     store = new PayloadStore({api, logger});
   });
@@ -308,6 +349,96 @@ describe("proof_provider/payload_store", () => {
       await store.processLCHeader(header);
 
       expect(store.prune).toHaveBeenCalledOnce();
+    });
+
+    it("should process a Gloas header with its execution payload envelope", async () => {
+      const slot = 20;
+      const payload = {...buildPayload({blockNumber: 10}), slotNumber: slot} as ExecutionPayload;
+      const header = buildGloasLCHeader({slot, blockHash: payload.blockHash});
+      api.beacon.getSignedExecutionPayloadEnvelope.mockResolvedValue(
+        buildGloasEnvelopeResponse({payload, beaconBlockRoot: header.beacon.parentRoot})
+      );
+
+      await store.processLCHeader(header);
+
+      expect(api.beacon.getSignedExecutionPayloadEnvelope).toHaveBeenCalledOnce();
+      expect(api.beacon.getSignedExecutionPayloadEnvelope).toHaveBeenCalledWith({
+        blockId: toHexString(header.beacon.parentRoot),
+      });
+      expect(store.latest).toEqual(payload);
+    });
+
+    it("should process an upgraded pre-Gloas header from its embedded payload", async () => {
+      const slot = 128;
+      const blockNumber = 10;
+      const blockResponse = buildBlockResponse({slot, blockNumber});
+      const payload = (blockResponse.value() as capella.SignedBeaconBlock).message.body.executionPayload;
+      const header = buildGloasLCHeader({slot, blockHash: payload.blockHash});
+      api.beacon.getBlockV2.mockResolvedValue(blockResponse);
+
+      await store.processLCHeader(header);
+
+      expect(api.beacon.getSignedExecutionPayloadEnvelope).not.toHaveBeenCalled();
+      expect(store.latest).toEqual(payload);
+    });
+
+    it("should find an embedded payload at the Gloas boundary", async () => {
+      const slot = 160;
+      const parentSlot = slot - 1;
+      const blockNumber = 10;
+      const parentBlockResponse = buildBlockResponse({slot: parentSlot, blockNumber});
+      const payload = (parentBlockResponse.value() as capella.SignedBeaconBlock).message.body.executionPayload;
+      const header = buildGloasLCHeader({slot, blockHash: payload.blockHash});
+      api.beacon.getBlockV2.mockResolvedValueOnce(buildNotFoundResponse()).mockResolvedValueOnce(parentBlockResponse);
+      api.beacon.getSignedExecutionPayloadEnvelope.mockResolvedValue(buildNotFoundResponse());
+
+      await store.processLCHeader(header);
+
+      expect(api.beacon.getSignedExecutionPayloadEnvelope).toHaveBeenCalledWith({
+        blockId: toHexString(header.beacon.parentRoot),
+      });
+      expect(store.latest).toEqual(payload);
+    });
+
+    it("should finalize a Gloas payload from its execution payload envelope", async () => {
+      const slot = 20;
+      const payload = {...buildPayload({blockNumber: 10}), slotNumber: slot} as ExecutionPayload;
+      const header = buildGloasLCHeader({slot, blockHash: payload.blockHash});
+      api.beacon.getSignedExecutionPayloadEnvelope.mockResolvedValue(
+        buildGloasEnvelopeResponse({payload, beaconBlockRoot: header.beacon.parentRoot})
+      );
+
+      await store.processLCHeader(header, true);
+
+      expect(store.finalized).toEqual(payload);
+    });
+
+    it("should reject a Gloas payload with a different execution block hash", async () => {
+      const slot = 20;
+      const payload = {...buildPayload({blockNumber: 10}), slotNumber: slot} as ExecutionPayload;
+      const header = buildGloasLCHeader({slot, blockHash: createHash("different-block-hash")});
+      api.beacon.getSignedExecutionPayloadEnvelope.mockResolvedValue(
+        buildGloasEnvelopeResponse({payload, beaconBlockRoot: header.beacon.parentRoot})
+      );
+
+      await expect(store.processLCHeader(header)).rejects.toThrow(
+        "Execution payload does not match light-client header execution block hash"
+      );
+      expect(store.latest).toBeUndefined();
+    });
+
+    it("should reject a Gloas envelope for a different beacon block", async () => {
+      const slot = 20;
+      const payload = {...buildPayload({blockNumber: 10}), slotNumber: slot} as ExecutionPayload;
+      const header = buildGloasLCHeader({slot, blockHash: payload.blockHash});
+      api.beacon.getSignedExecutionPayloadEnvelope.mockResolvedValue(
+        buildGloasEnvelopeResponse({payload, beaconBlockRoot: createHash("different-beacon-block")})
+      );
+
+      await expect(store.processLCHeader(header)).rejects.toThrow(
+        "Execution payload envelope does not match requested beacon block root"
+      );
+      expect(store.latest).toBeUndefined();
     });
   });
 

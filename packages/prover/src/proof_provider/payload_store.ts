@@ -1,9 +1,13 @@
 import {ApiClient} from "@lodestar/api";
-import {ForkName} from "@lodestar/params";
-import {ExecutionPayload, LightClientHeader} from "@lodestar/types";
+import {ExecutionPayload, LightClientHeader, RootHex} from "@lodestar/types";
 import {Logger} from "@lodestar/utils";
 import {MAX_PAYLOAD_HISTORY} from "../constants.js";
-import {fetchBlock, getExecutionPayloadForBlockNumber} from "../utils/consensus.js";
+import {
+  fetchBlock,
+  fetchExecutionPayload,
+  getEmbeddedExecutionPayload,
+  getExecutionPayloadForBlockNumber,
+} from "../utils/consensus.js";
 import {bufferToHex, hexToNumber} from "../utils/conversion.js";
 import {OrderedMap} from "./ordered_map.js";
 
@@ -123,7 +127,11 @@ export class PayloadStore {
 
     if (this.latestBlockRoot) {
       const latestPayload = this.payloads.get(this.latestBlockRoot);
-      if (latestPayload && latestPayload.blockNumber < payload.blockNumber) {
+      if (
+        !latestPayload ||
+        latestPayload.blockNumber < payload.blockNumber ||
+        (latestPayload.blockNumber === payload.blockNumber && this.latestBlockRoot !== blockELRoot)
+      ) {
         this.latestBlockRoot = blockELRoot;
       }
     } else {
@@ -135,60 +143,135 @@ export class PayloadStore {
     }
   }
 
-  async processLCHeader(header: LightClientHeader<ForkName.capella>, finalized = false): Promise<void> {
+  /**
+   * Cache the execution payload referenced by a verified light-client header.
+   *
+   * Assumes the caller:
+   *   - verified the light-client signatures and Merkle branches.
+   *   - checked that the header has the correct execution data.
+   *   - (If `finalized` is true) verified consensus finality for the header.
+   */
+  async processLCHeader(header: LightClientHeader, finalized = false): Promise<void> {
+    const executionBlockHash = this.getExecutionBlockHash(header);
+    if (!executionBlockHash) return;
+
     const blockSlot = header.beacon.slot;
-    const blockNumber = header.execution.blockNumber;
-    const blockELRoot = bufferToHex(header.execution.blockHash);
+    const blockELRoot = bufferToHex(executionBlockHash);
     const blockCLRoot = bufferToHex(header.beacon.stateRoot);
     const existingELRoot = this.unfinalizedRoots.get(blockCLRoot);
+    const existingPayload = existingELRoot ? this.payloads.get(existingELRoot) : undefined;
 
-    // ==== Finalized blocks ====
-    // if the block is finalized, we need to update the finalizedRoots map
-    if (finalized) {
-      this.finalizedRoots.set(blockNumber, {blockELRoot, slot: blockSlot});
-
-      // If the block is finalized and we already have the payload
-      // We can remove it from the unfinalizedRoots map and do nothing else
-      if (existingELRoot) {
+    if (existingELRoot === blockELRoot && existingPayload) {
+      if (finalized) {
+        this.set(existingPayload, blockSlot, true);
         this.unfinalizedRoots.delete(blockCLRoot);
       }
-
-      // If the block is finalized and we do not have the payload
-      // We need to fetch and set the payload
-      else {
-        const block = await fetchBlock(this.opts.api, blockSlot);
-        if (block) {
-          this.payloads.set(blockELRoot, block.message.body.executionPayload);
-        } else {
-          this.opts.logger.error("Failed to fetch block", blockSlot);
-        }
-      }
-
       return;
     }
 
-    // ==== Unfinalized blocks ====
-    // We already have the payload for this block
-    if (existingELRoot && existingELRoot === blockELRoot) {
-      return;
-    }
-
-    // Re-org happened, we need to update the payload
     if (existingELRoot && existingELRoot !== blockELRoot) {
       this.payloads.delete(existingELRoot);
+      this.unfinalizedRoots.delete(blockCLRoot);
     }
 
-    // This is unfinalized header we need to store it's root related to cl root
-    this.unfinalizedRoots.set(blockCLRoot, blockELRoot);
+    const payload = await this.fetchExecutionPayloadForLightClientHeader(header);
+    if (!payload) {
+      this.opts.logger.error("Failed to fetch execution payload", {slot: blockSlot});
+      return;
+    }
 
-    // We do not have the payload for this block, we need to fetch it
-    const block = await fetchBlock(this.opts.api, blockSlot);
-    if (block) {
-      this.set(block.message.body.executionPayload, blockSlot, false);
+    if (bufferToHex(payload.blockHash) !== blockELRoot) {
+      throw new Error("Execution payload does not match light-client header execution block hash");
+    }
+
+    if ("execution" in header && payload.blockNumber !== header.execution.blockNumber) {
+      throw new Error(
+        `Execution payload block number ${payload.blockNumber} does not match light-client header block number ${header.execution.blockNumber}`
+      );
+    }
+
+    this.set(payload, blockSlot, finalized);
+    if (finalized) {
+      this.unfinalizedRoots.delete(blockCLRoot);
     } else {
-      this.opts.logger.error("Failed to fetch finalized block", blockSlot);
+      this.unfinalizedRoots.set(blockCLRoot, blockELRoot);
     }
     this.prune();
+  }
+
+  /**
+   * Gets the execution block hash, if present.
+   *
+   * Returns `executionBlockHash` for Gloas-shaped headers, including upgraded headers. Returns
+   * `execution.blockHash` for original Capella-through-Fulu headers. Returns undefined for pre-Capella headers.
+   */
+  private getExecutionBlockHash(header: LightClientHeader): Uint8Array | undefined {
+    if ("executionBlockHash" in header) return header.executionBlockHash;
+    if ("execution" in header) return header.execution.blockHash;
+    return undefined;
+  }
+
+  private async fetchExecutionPayloadForLightClientHeader(
+    header: LightClientHeader
+  ): Promise<ExecutionPayload | undefined> {
+    if (!("executionBlockHash" in header)) {
+      if (!("execution" in header)) return;
+
+      const block = await fetchBlock(this.opts.api, header.beacon.slot);
+      if (!block) return;
+
+      return fetchExecutionPayload(this.opts.api, block);
+    }
+
+    const expectedBlockHash = bufferToHex(header.executionBlockHash);
+
+    // A pre-Gloas header can be upgraded to the Gloas shape. Its payload remains embedded in its own block.
+    const headerBlock = await fetchBlock(this.opts.api, header.beacon.slot);
+    const headerBlockPayload = headerBlock ? getEmbeddedExecutionPayload(headerBlock) : undefined;
+    if (headerBlockPayload) {
+      if (bufferToHex(headerBlockPayload.blockHash) !== expectedBlockHash) {
+        throw new Error("Execution payload does not match light-client header execution block hash");
+      }
+      return headerBlockPayload;
+    }
+
+    let beaconBlockRoot = bufferToHex(header.beacon.parentRoot) as RootHex;
+    const visitedRoots = new Set<RootHex>();
+
+    while (!visitedRoots.has(beaconBlockRoot)) {
+      visitedRoots.add(beaconBlockRoot);
+
+      const response = await this.opts.api.beacon.getSignedExecutionPayloadEnvelope({blockId: beaconBlockRoot});
+      if (response.ok) {
+        const envelope = response.value().message;
+        if (bufferToHex(envelope.beaconBlockRoot) !== beaconBlockRoot) {
+          throw new Error("Execution payload envelope does not match requested beacon block root");
+        }
+        if (bufferToHex(envelope.payload.blockHash) !== expectedBlockHash) {
+          throw new Error("Execution payload does not match light-client header execution block hash");
+        }
+        return envelope.payload;
+      }
+
+      if (response.status !== 404) return;
+
+      const block = await fetchBlock(this.opts.api, beaconBlockRoot);
+      if (!block) return;
+
+      // The first Gloas block can reference a payload embedded in its pre-Gloas parent block.
+      const embeddedPayload = getEmbeddedExecutionPayload(block);
+      if (embeddedPayload) {
+        if (bufferToHex(embeddedPayload.blockHash) !== expectedBlockHash) {
+          throw new Error("Execution payload does not match light-client header execution block hash");
+        }
+        return embeddedPayload;
+      }
+
+      beaconBlockRoot = bufferToHex(block.message.parentRoot) as RootHex;
+      if (/^0x0+$/.test(beaconBlockRoot)) return;
+    }
+
+    return;
   }
 
   prune(): void {

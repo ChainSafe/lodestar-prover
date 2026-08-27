@@ -1,25 +1,47 @@
 import {ApiClient} from "@lodestar/api/beacon";
 import {GenesisData, Lightclient} from "@lodestar/light-client";
-import {Bytes32, ExecutionPayload, capella} from "@lodestar/types";
-import {Logger} from "@lodestar/utils";
+import {Bytes32, ExecutionPayload, RootHex, SignedBeaconBlock} from "@lodestar/types";
+import {Logger, byteArrayEquals} from "@lodestar/utils";
 import {MAX_PAYLOAD_HISTORY} from "../constants.js";
-import {hexToBuffer} from "./conversion.js";
+import {bufferToHex, hexToBuffer} from "./conversion.js";
 
-export async function fetchBlock(api: ApiClient, slot: number): Promise<capella.SignedBeaconBlock | undefined> {
-  const res = await api.beacon.getBlockV2({blockId: slot});
+export async function fetchBlock(api: ApiClient, blockId: number | RootHex): Promise<SignedBeaconBlock | undefined> {
+  const res = await api.beacon.getBlockV2({blockId});
 
-  if (res.ok) return res.value() as capella.SignedBeaconBlock;
+  if (res.ok) return res.value();
   return;
+}
+
+export function getEmbeddedExecutionPayload(block: SignedBeaconBlock): ExecutionPayload | undefined {
+  return (block.message.body as {executionPayload?: ExecutionPayload}).executionPayload;
+}
+
+export async function fetchExecutionPayload(
+  api: ApiClient,
+  block: SignedBeaconBlock,
+  expectedBeaconBlockRoot?: RootHex
+): Promise<ExecutionPayload | undefined> {
+  const executionPayload = getEmbeddedExecutionPayload(block);
+  if (executionPayload) return executionPayload;
+
+  const response = await api.beacon.getSignedExecutionPayloadEnvelope({
+    blockId: expectedBeaconBlockRoot ?? block.message.slot,
+  });
+  if (!response.ok) return;
+
+  const envelope = response.value().message;
+  if (expectedBeaconBlockRoot && bufferToHex(envelope.beaconBlockRoot) !== expectedBeaconBlockRoot) return;
+  return envelope.payload;
 }
 
 export async function fetchNearestBlock(
   api: ApiClient,
   slot: number,
   direction: "up" | "down" = "down"
-): Promise<capella.SignedBeaconBlock> {
+): Promise<SignedBeaconBlock> {
   const res = await api.beacon.getBlockV2({blockId: slot});
 
-  if (res.ok) return res.value() as capella.SignedBeaconBlock;
+  if (res.ok) return res.value();
 
   if (!res.ok && res.status === 404) {
     return fetchNearestBlock(api, direction === "down" ? slot - 1 : slot + 1);
@@ -61,18 +83,21 @@ export async function getExecutionPayloads({
 
   let slot = endSlot;
   let block = await fetchNearestBlock(api, slot);
-  payloads.set(block.message.slot, block.message.body.executionPayload);
+  let payload = await fetchExecutionPayload(api, block);
+  if (payload) payloads.set(block.message.slot, payload);
   slot = block.message.slot - 1;
 
   while (slot >= startSlot) {
     const previousBlock = await fetchNearestBlock(api, block.message.slot - 1);
+    const previousPayload = await fetchExecutionPayload(api, previousBlock);
 
-    if (block.message.body.executionPayload.parentHash === previousBlock.message.body.executionPayload.blockHash) {
-      payloads.set(block.message.slot, block.message.body.executionPayload);
+    if (payload && previousPayload && byteArrayEquals(payload.parentHash, previousPayload.blockHash)) {
+      payloads.set(block.message.slot, payload);
     }
 
     slot = block.message.slot - 1;
     block = previousBlock;
+    payload = previousPayload;
   }
 
   return payloads;
@@ -86,12 +111,13 @@ export async function getExecutionPayloadForBlockNumber(
   const payloads = new Map<number, ExecutionPayload>();
 
   let block = await fetchNearestBlock(api, startSlot);
-  payloads.set(block.message.slot, block.message.body.executionPayload);
+  let payload = await fetchExecutionPayload(api, block);
+  if (payload) payloads.set(block.message.slot, payload);
 
-  while (payloads.get(block.message.slot)?.blockNumber !== blockNumber) {
-    const previousBlock = await fetchNearestBlock(api, block.message.slot - 1);
-    block = previousBlock;
-    payloads.set(block.message.slot, block.message.body.executionPayload);
+  while (!payload || payload.blockNumber !== blockNumber) {
+    block = await fetchNearestBlock(api, block.message.slot - 1);
+    payload = await fetchExecutionPayload(api, block);
+    if (payload) payloads.set(block.message.slot, payload);
   }
 
   return payloads;

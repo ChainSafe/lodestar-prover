@@ -3,13 +3,12 @@ import {ChainForkConfig, createChainForkConfig} from "@lodestar/config";
 import {NetworkName, networksChainConfig} from "@lodestar/config/networks";
 import {Lightclient, LightclientEvent, RunStatusCode} from "@lodestar/light-client";
 import {LightClientRestTransport} from "@lodestar/light-client/transport";
-import {ForkName, isForkPostCapella} from "@lodestar/params";
-import {ExecutionPayload, LightClientHeader} from "@lodestar/types";
+import {isForkPostCapella} from "@lodestar/params";
+import {ExecutionPayload, LightClientHeader, ssz} from "@lodestar/types";
 import {Logger} from "@lodestar/utils";
 import {LCTransport, RootProviderInitOptions} from "../interfaces.js";
 import {assertLightClient} from "../utils/assertion.js";
 import {
-  fetchBlock,
   getExecutionPayloads,
   getGenesisData,
   getSyncCheckpoint,
@@ -117,15 +116,9 @@ export class ProofProvider {
       this.store.set(payload, slot, false);
     }
 
-    // Load the finalized payload from the CL
-    const finalizedSlot = this.lightClient.getFinalized().beacon.slot;
-    this.logger.debug("Getting finalized slot from lightclient", {finalizedSlot});
-    const block = await fetchBlock(this.opts.api, finalizedSlot);
-    if (block) {
-      this.store.set(block.message.body.executionPayload, finalizedSlot, true);
-    } else {
-      this.logger.error("Failed to fetch finalized block", finalizedSlot);
-    }
+    // Load payloads referenced by the verified light-client headers.
+    await this.processLCHeader(this.lightClient.getFinalized(), true);
+    await this.processLCHeader(this.lightClient.getHead());
 
     this.logger.info("Proof provider ready");
   }
@@ -177,15 +170,27 @@ export class ProofProvider {
       return;
     }
 
-    const sszType = this.opts.config.getPostBellatrixForkTypes(lcHeader.beacon.slot).ExecutionPayloadHeader;
-    if (
-      isForkPostCapella(fork) &&
-      (!("execution" in lcHeader) || sszType.equals(lcHeader.execution, sszType.defaultValue()))
-    ) {
+    // Finalized headers may be upgraded to the current fork shape while retaining their original slot.
+    let missingExecution: boolean;
+    if ("executionBlockHash" in lcHeader) {
+      missingExecution = ssz.Bytes32.equals(lcHeader.executionBlockHash, ssz.Bytes32.defaultValue());
+    } else if ("execution" in lcHeader) {
+      const executionPayloadHeaderType = this.opts.config.getPostBellatrixForkTypes(
+        lcHeader.beacon.slot
+      ).ExecutionPayloadHeader;
+      missingExecution = executionPayloadHeaderType.equals(
+        lcHeader.execution,
+        executionPayloadHeaderType.defaultValue()
+      );
+    } else {
+      missingExecution = true;
+    }
+
+    if (missingExecution) {
       throw new Error("Execution payload is required for execution fork");
     }
 
-    await this.store.processLCHeader(lcHeader as LightClientHeader<ForkName.capella>, finalized);
+    await this.store.processLCHeader(lcHeader, finalized);
   }
 
   private registerEvents(): void {
