@@ -123,7 +123,6 @@ export async function isValidBlock({
   }
 
   const common = getChainCommon(config.PRESET_BASE);
-  common.setHardforkByBlockNumber(executionPayload.blockNumber, undefined, executionPayload.timestamp);
   const blockObject = Block.fromBlockData(blockDataFromELBlock(block), {common});
 
   if (!(await blockObject.validateTransactionsTrie())) {
