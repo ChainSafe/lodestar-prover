@@ -22,7 +22,22 @@ catalogs:
 overrides:
   dns-over-http-resolver: ^2.1.1
   loupe: ^2.3.6
+  nan: ^2.19.0
   elliptic: '>=6.6.1'
+  '@chainsafe/as-sha256': 1.2.4
+  '@chainsafe/blst': 2.2.0
+  '@chainsafe/persistent-merkle-tree': 1.3.0
+  '@chainsafe/pubkey-index-map': 3.0.0
+  '@chainsafe/ssz': 1.6.2
+  '@chainsafe/swap-or-not-shuffle': 1.2.1
+  '@lodestar/api': 1.46.0
+  '@lodestar/config': 1.46.0
+  '@lodestar/logger': 1.46.0
+  '@lodestar/params': 1.46.0
+  '@lodestar/state-transition': 1.46.0
+  '@lodestar/types': 1.46.0
+  '@lodestar/utils': 1.46.0
+  '@vekexasia/bigint-buffer2': 1.1.1
 
 importers:
 
@@ -50,8 +65,8 @@ importers:
         specifier: ^4.9.4
         version: 4.11.5(@lerna-lite/exec@4.11.5)(@lerna-lite/publish@4.11.5)(@lerna-lite/run@4.11.5)(@types/node@24.12.2)(conventional-commits-filter@5.0.0)
       '@lodestar/params':
-        specifier: ^1.42.0
-        version: 1.42.0
+        specifier: 1.46.0
+        version: 1.46.0
       '@types/node':
         specifier: ^24.10.1
         version: 24.12.2
@@ -131,38 +146,38 @@ importers:
         specifier: 8.2.0
         version: 8.2.0(@chainsafe/blst@2.2.0)
       '@chainsafe/blst':
-        specifier: ^2.2.0
+        specifier: 2.2.0
         version: 2.2.0
       '@chainsafe/persistent-merkle-tree':
-        specifier: ^1.2.1
-        version: 1.2.5
+        specifier: 1.3.0
+        version: 1.3.0
       '@chainsafe/ssz':
-        specifier: ^1.4.0
-        version: 1.4.0
+        specifier: 1.6.2
+        version: 1.6.2
       '@lodestar/api':
-        specifier: ^1.42.0
-        version: 1.42.0(vitest@4.1.5(@types/node@24.12.2)(@vitest/browser-playwright@4.1.5)(@vitest/coverage-v8@4.1.5)(vite@6.4.2(@types/node@24.12.2)(yaml@2.8.4)))
+        specifier: 1.46.0
+        version: 1.46.0
       '@lodestar/config':
-        specifier: ^1.42.0
-        version: 1.42.0(vitest@4.1.5(@types/node@24.12.2)(@vitest/browser-playwright@4.1.5)(@vitest/coverage-v8@4.1.5)(vite@6.4.2(@types/node@24.12.2)(yaml@2.8.4)))
+        specifier: 1.46.0
+        version: 1.46.0
       '@lodestar/params':
-        specifier: ^1.42.0
-        version: 1.42.0
+        specifier: 1.46.0
+        version: 1.46.0
       '@lodestar/state-transition':
-        specifier: ^1.42.0
-        version: 1.42.0(vitest@4.1.5(@types/node@24.12.2)(@vitest/browser-playwright@4.1.5)(@vitest/coverage-v8@4.1.5)(vite@6.4.2(@types/node@24.12.2)(yaml@2.8.4)))
+        specifier: 1.46.0
+        version: 1.46.0
       '@lodestar/types':
-        specifier: ^1.42.0
-        version: 1.42.0
+        specifier: 1.46.0
+        version: 1.46.0
       '@lodestar/utils':
-        specifier: ^1.42.0
-        version: 1.42.0
+        specifier: 1.46.0
+        version: 1.46.0
       mitt:
         specifier: ^3.0.0
         version: 3.0.1
     devDependencies:
       '@chainsafe/as-sha256':
-        specifier: ^1.2.0
+        specifier: 1.2.4
         version: 1.2.4
       '@fastify/cors':
         specifier: ^10.0.1
@@ -183,8 +198,8 @@ importers:
   packages/prover:
     dependencies:
       '@chainsafe/persistent-merkle-tree':
-        specifier: ^1.2.1
-        version: 1.2.5
+        specifier: 1.3.0
+        version: 1.3.0
       '@ethereumjs/block':
         specifier: ^4.2.2
         version: 4.3.0
@@ -210,26 +225,26 @@ importers:
         specifier: ^6.4.2
         version: 6.5.0
       '@lodestar/api':
-        specifier: ^1.42.0
-        version: 1.42.0(vitest@4.1.5(@types/node@24.12.2)(@vitest/browser-playwright@4.1.5)(@vitest/coverage-v8@4.1.5)(vite@6.4.2(@types/node@24.12.2)(yaml@2.8.4)))
+        specifier: 1.46.0
+        version: 1.46.0
       '@lodestar/config':
-        specifier: ^1.42.0
-        version: 1.42.0(vitest@4.1.5(@types/node@24.12.2)(@vitest/browser-playwright@4.1.5)(@vitest/coverage-v8@4.1.5)(vite@6.4.2(@types/node@24.12.2)(yaml@2.8.4)))
+        specifier: 1.46.0
+        version: 1.46.0
       '@lodestar/light-client':
         specifier: workspace:^
         version: link:../light-client
       '@lodestar/logger':
-        specifier: ^1.42.0
-        version: 1.42.0
+        specifier: 1.46.0
+        version: 1.46.0
       '@lodestar/params':
-        specifier: ^1.42.0
-        version: 1.42.0
+        specifier: 1.46.0
+        version: 1.46.0
       '@lodestar/types':
-        specifier: ^1.42.0
-        version: 1.42.0
+        specifier: 1.46.0
+        version: 1.46.0
       '@lodestar/utils':
-        specifier: ^1.42.0
-        version: 1.42.0
+        specifier: 1.46.0
+        version: 1.46.0
       ethereum-cryptography:
         specifier: ^2.0.0
         version: 2.2.1
@@ -378,7 +393,7 @@ packages:
     resolution: {integrity: sha512-onCMG4K5GRWTHPf5T9DrOLsd5VoiOoL0NEpRoAigXVPqr+Gi2GyOncbvc9Vf4RjhmZGgtIJKKB4WJQbRV9Pddw==}
     engines: {node: '>=18'}
     peerDependencies:
-      '@chainsafe/blst': ^1.0.0
+      '@chainsafe/blst': 2.2.0
     peerDependenciesMeta:
       '@chainsafe/blst':
         optional: true
@@ -477,11 +492,8 @@ packages:
     resolution: {integrity: sha512-OaWjsZ6S/GaT2RvaqdpsF5Mux8qQOE2KbitX2yHmQJZNUZkdh7C3N4PA5LsvewqX+z8Nkv8mr1uSe0LSrHGiQw==}
     engines: {node: '>= 18'}
 
-  '@chainsafe/persistent-merkle-tree@1.2.5':
-    resolution: {integrity: sha512-uyv3/nHkD8vNXjdez6q89rhXwGDUp3YX2mBbOwB7/xelgZ9E7hc3HQgOuq1EdfM9Vyh09jiwimXF/hskmymOfQ==}
-
-  '@chainsafe/persistent-ts@1.0.3':
-    resolution: {integrity: sha512-dWySqX6Tl2QJaFeJ+oiyl612LGKqXjT810XRdKZL7Bioe88NI78yPNoIMEZZ+tMsRAS+upI4QkilQDY4ONCFcA==}
+  '@chainsafe/persistent-merkle-tree@1.3.0':
+    resolution: {integrity: sha512-xGe95xNkYayC5BYQpo7ft5oHwyf52YtqBip+GJqZ9XgKSzraw93qUMNeqKrOVJbZM5HEOys8xxkt0h7VD1a9cw==}
 
   '@chainsafe/pubkey-index-map-darwin-arm64@3.0.0':
     resolution: {integrity: sha512-gM/wwA6bpfeZm80aSoH2c3ddbPeZho73TUUprUFlHQNLldGzZ293yFQgj2Ontp1fMf9AI0w+F0uEN2qC6v7g9A==}
@@ -539,8 +551,8 @@ packages:
     resolution: {integrity: sha512-KvWmKOG8WiVePHQDGyz+xo+RpsrmPEeipF8boqmXNYCLOGyVpkEXQk0IDVpnxngZziY6d97F9sml2vliDoyYyQ==}
     engines: {node: '>= 10'}
 
-  '@chainsafe/ssz@1.4.0':
-    resolution: {integrity: sha512-DRje073CIU0lvIdNKmW89jAo4UAidoKpgYco5wvQve8WK1DUk/YS/54c5FX/e/iiKiJ1mo44CNCg4xiKWY3/yQ==}
+  '@chainsafe/ssz@1.6.2':
+    resolution: {integrity: sha512-XJELFJBHBstcvyRuXWPmNc/WRWmV5FVV03+iPTpgtCPQaImEHjKU4bc/5me35dRrXpehC04LD4ePYayOUjxFbw==}
 
   '@chainsafe/swap-or-not-shuffle-darwin-arm64@1.2.1':
     resolution: {integrity: sha512-kTewLZe1KqMAJ1gHfagOxo0BI4kTcMOAkGJ7pRLFM5ZkL2P7sh3/4ixnjdbtMkO207vMZEZL3fxJSSs14kg9Kg==}
@@ -1078,34 +1090,26 @@ packages:
     resolution: {integrity: sha512-HlPDQ2cluAKYbIzJGIPaFmQKEEdARr+sW64lShVgJqBUQgVegEiRtrNsR8dql4LBj0l78fKi4cFFknNHcyXMPQ==}
     engines: {node: ^20.17.0 || >=22.9.0}
 
-  '@lodestar/api@1.42.0':
-    resolution: {integrity: sha512-tbMD/SA1eCAxaklbAZUqGF7mdMqKVVUoyiW+A32KmIASpOjFtoHNFOTlBf9zKws4bQ8MZFGYe1hAg49i/FTMZw==}
+  '@lodestar/api@1.46.0':
+    resolution: {integrity: sha512-CZPXq8NLcZfmt6X0DokjPAbqnPYSU387T8QT+g2krvMqlMgycf+ByM42YsOj7EboYG4a+h1XfsgI3D2DLK0JZg==}
 
-  '@lodestar/config@1.42.0':
-    resolution: {integrity: sha512-se2mHzNPS+NXv2wJ2PfGt4IQupcXv+qzhOBkF+UrMY9EBkCB0c4gpA5DeURwp3JMjKIU8k1pLBURYPEmv3v8Yw==}
+  '@lodestar/config@1.46.0':
+    resolution: {integrity: sha512-DJG1BavZowYq5ezOEQyR6Uijpc3ufFtTRM3zYp+7YhqDN+Y+LAOtWXJxPuAUJjUfEEFQgYj+ZJ7iJCS5suWj9g==}
 
-  '@lodestar/logger@1.42.0':
-    resolution: {integrity: sha512-fllrC3lAL5KpNvSqbeaT/oS+SxBsCDgksFfAop9eVrtj4msrTGT80fevVe34d/Dw7QhkHe6BhQlkf6/I9h5Ckg==}
+  '@lodestar/logger@1.46.0':
+    resolution: {integrity: sha512-dLwuYKnzl0oMmW6LXJu5HUu/a6Ny9gjrfymfb5GTFNAV2DmrZ91QewgoDAHSKL/R1IDNEneE0+pabdJgYjpiDw==}
 
-  '@lodestar/params@1.42.0':
-    resolution: {integrity: sha512-WEzbqgDe0hcrK+qenfvpBilD0we2KVvmSLxgI+sa4JlOjLHrrxIhIJTBCtJ6HfFjX/mMNYZSyrHbryVqNS3RuA==}
+  '@lodestar/params@1.46.0':
+    resolution: {integrity: sha512-eyJrn62yNZr+0KxzSKAtDkxzzMoo9T1Bz2N51mQAamp+eP6gFWPRKwegRc323SCALO41Jb1ELaECane2D7dQzA==}
 
-  '@lodestar/spec-test-util@1.42.0':
-    resolution: {integrity: sha512-heiwYmkHskvYc5jOLuWOHYg/IQV5nhKXuE3nG3CtpOrCjzCoXhY74BELBiS/sdh7/cqDzBjOPUyJASd7dRmnNQ==}
-    hasBin: true
-    peerDependencies:
-      '@chainsafe/ssz': ^1.2.2
-      '@lodestar/types': ^1.42.0
-      vitest: 'catalog:'
+  '@lodestar/state-transition@1.46.0':
+    resolution: {integrity: sha512-/Wck1EE7nvv8qZvO2Gy5Pv79c1SZ0zNhoQjFA2MAHINwkd+azwmUX7tp16ZRkzwNnRPtYSHpY+rOvGH9imn/ng==}
 
-  '@lodestar/state-transition@1.42.0':
-    resolution: {integrity: sha512-2eL6juScvhOgcwfLV1NVWRf3Yv2hD1LloaAyVPipieiwfn85uThhhyFWiG6sZ6rc7u1VTFSF4LTxKeMa71HHMQ==}
+  '@lodestar/types@1.46.0':
+    resolution: {integrity: sha512-Ga48V+1MNftO0a3cCS3CSLMpLihohsWAl1jOIFz47Jvz8xFDjXOATXmv+AlxNm4CbwmKLIEBL2e5UH0kRh85vw==}
 
-  '@lodestar/types@1.42.0':
-    resolution: {integrity: sha512-TG1lX+U+0rS9pe3mMGZ9xBZ7l4YnouF0ngY/ysX9ZBTDs2MJS6rwunqr+UMVAw4AqhBUZp7+UIYC+rRzf9qqgA==}
-
-  '@lodestar/utils@1.42.0':
-    resolution: {integrity: sha512-kPLxs/cEoElPMASWGzH5IIO4Jrb9hp/xpbUaLDS5mQFh7XmNYZUHpbxinKwEhT5lHLR1fYIsZLzbCa2wAMaeSw==}
+  '@lodestar/utils@1.46.0':
+    resolution: {integrity: sha512-KEDTwiJLuTotisRFaazZHZB7PJMHpBlKM3w2PVSqMIUTZ7c7XaQAssnCTz0elUH9oxZ/mZfEphVeDdzuRl6V1Q==}
 
   '@microsoft/api-extractor-model@7.33.8':
     resolution: {integrity: sha512-aIcoQggPyer3B6Ze3usz0YWC/oBwUHfRH5ETUsr+oT2BRA6SfTJl7IKPcPZkX4UR+PohowzW4uMxsvjrn8vm+w==}
@@ -2516,9 +2520,6 @@ packages:
     resolution: {integrity: sha512-XUBA9XClHbnJWSfBzjkm6RvPsyg3sryZt06BEQoXcF7EK/xpGaQYJgQKDJSUH5SGZ76Y7pFx1QBnXz09rU5Fbw==}
     engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0}
 
-  fs.realpath@1.0.0:
-    resolution: {integrity: sha512-OO0pH2lK6a0hZnAdau5ItzHPI6pUlvI7jMVnxUQRtw4owF2wk8lOSabtGDCTP4Ggrg2MbGnWO9X8K1t4+fGMDw==}
-
   fsevents@2.3.2:
     resolution: {integrity: sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==}
     engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
@@ -2572,11 +2573,6 @@ packages:
   glob@13.0.6:
     resolution: {integrity: sha512-Wjlyrolmm8uDpm/ogGyXZXb1Z+Ca2B8NbJwqBVg0axK9GbBeoS7yGV6vjXnYdGm6X53iehEuxxbyiKp8QmN4Vw==}
     engines: {node: 18 || 20 || >=22}
-
-  glob@9.3.5:
-    resolution: {integrity: sha512-e1LleDykUz2Iu+MTYdkSsuWX8lvAjAcs0Xef0lNIu0S2wOAzuTxCJtcd9S3cijlwYF18EsU3rzb8jPVobxDh9Q==}
-    engines: {node: '>=16 || 14 >=14.17'}
-    deprecated: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
 
   gopd@1.2.0:
     resolution: {integrity: sha512-ZUKRh6/kUFoAiTAtTYPZJ3hw9wNxx+BIBOijnlG9PnrJsCcSjs1wyyD6vJpaYtgnzDrKYRSqf3OO6Rfa93xsRg==}
@@ -3000,10 +2996,6 @@ packages:
     resolution: {integrity: sha512-MULkVLfKGYDFYejP07QOurDLLQpcjk7Fw+7jXS2R2czRQzR56yHRveU5NDJEOviH+hETZKSkIk5c+T23GjFUMg==}
     engines: {node: 18 || 20 || >=22}
 
-  minimatch@8.0.7:
-    resolution: {integrity: sha512-V+1uQNdzybxa14e/p00HZnQNNcTjnRJjDxg2V8wtkjFctq4M7hXFws4oekyTP0Jebeq7QYtpFyOeBAjc88zvYg==}
-    engines: {node: '>=16 || 14 >=14.17'}
-
   minimatch@9.0.9:
     resolution: {integrity: sha512-OBwBN9AL4dqmETlpS2zasx+vTeWclWzkblfZk7KTA5j3jeOONz/tRCnZomUyvNg83wL5Zv9Ss6HMJXAgL8R2Yg==}
     engines: {node: '>=16 || 14 >=14.17'}
@@ -3033,10 +3025,6 @@ packages:
 
   minipass@3.3.6:
     resolution: {integrity: sha512-DxiNidxSEK+tHG6zOIklvNOwm3hvCrbUrdtzY74U6HKTJxvIDfOUL5W5P2Ghd3DTkhhKPYGqeNUIh5qcM4YBfw==}
-    engines: {node: '>=8'}
-
-  minipass@4.2.8:
-    resolution: {integrity: sha512-fNzuVyifolSLFL4NzpF+wEF4qrgqaaKX0haXPQEdQ7NKAN+WecoKMHV09YcuL/DHxrUsYQOK3MiuDf7Ip2OXfQ==}
     engines: {node: '>=8'}
 
   minipass@7.1.3:
@@ -3299,10 +3287,6 @@ packages:
   path-parse@1.0.7:
     resolution: {integrity: sha512-LDJzPVEEEPR+y48z93A0Ed0yXb8pAByGWo/k5YYdYgpY2/2EsOsksJrq7lOHxryrVOn1ejG6oAp8ahvOIQD8sw==}
 
-  path-scurry@1.11.1:
-    resolution: {integrity: sha512-Xa4Nw17FS9ApQFJ9umLiJS4orGjm7ZzwUrwamcGQuHSzDyth9boKDaycYdDcZDuqYATXw4HFXgaqWTctW/v1HA==}
-    engines: {node: '>=16 || 14 >=14.18'}
-
   path-scurry@2.0.2:
     resolution: {integrity: sha512-3O/iVVsJAPsOnpwWIeD+d6z/7PmqApyQePUtCndjatj/9I5LylHvt5qluFaBT3I5h3r1ejfR056c+FCv+NnNXg==}
     engines: {node: 18 || 20 || >=22}
@@ -3499,11 +3483,6 @@ packages:
   rfdc@1.4.1:
     resolution: {integrity: sha512-q1b3N5QkRUWUl7iyylaaj3kOpIT0N2i9MqIEQXP73GVsN9cw3fdx8X63cEmWhJGi2PPCF23Ijp7ktmd39rawIA==}
 
-  rimraf@4.4.1:
-    resolution: {integrity: sha512-Gk8NlF062+T9CqNGn6h4tls3k6T1+/nXdOcSZVikNVtlRdYpA7wRJJMoXmuvOnLW844rPjdQ7JgXCYM6PPC/og==}
-    engines: {node: '>=14'}
-    hasBin: true
-
   ripemd160@2.0.3:
     resolution: {integrity: sha512-5Di9UC0+8h1L6ZD2d7awM7E/T4uA1fJRlx6zk/NvdCCVEoAnFqvHmCuNeIKoCeIixBX/q8uM+6ycDvF8woqosA==}
     engines: {node: '>= 0.8'}
@@ -3621,9 +3600,6 @@ packages:
   smart-buffer@4.2.0:
     resolution: {integrity: sha512-94hK0Hh8rPqQl2xXc3HsaBoOXKV20MToPkcXvwbISWLEs+64sBq5kFgn2kJDHb1Pry9yrP0dxrCI9RRci7RXKg==}
     engines: {node: '>= 6.0.0', npm: '>= 3.0.0'}
-
-  snappyjs@0.7.0:
-    resolution: {integrity: sha512-u5iEEXkMe2EInQio6Wv9LWHOQYRDbD2O9hzS27GpT/lwfIQhTCnHCTqedqHIHe9ZcvQo+9au6vngQayipz1NYw==}
 
   socks-proxy-agent@8.0.5:
     resolution: {integrity: sha512-HehCEsotFqbPW9sJ8WVYB6UbmIMv7kUUORIF2Nncq4VQvBfNBLibW9YZR5dlYCSUhwcD628pRllm7n+E+YTzJw==}
@@ -4393,13 +4369,11 @@ snapshots:
       '@chainsafe/hashtree-linux-x64-musl': 1.0.2
       '@chainsafe/hashtree-win32-x64-msvc': 1.0.2
 
-  '@chainsafe/persistent-merkle-tree@1.2.5':
+  '@chainsafe/persistent-merkle-tree@1.3.0':
     dependencies:
       '@chainsafe/as-sha256': 1.2.4
       '@chainsafe/hashtree': 1.0.2
       '@noble/hashes': 1.8.0
-
-  '@chainsafe/persistent-ts@1.0.3': {}
 
   '@chainsafe/pubkey-index-map-darwin-arm64@3.0.0':
     optional: true
@@ -4436,10 +4410,10 @@ snapshots:
       '@chainsafe/pubkey-index-map-win32-arm64-msvc': 3.0.0
       '@chainsafe/pubkey-index-map-win32-x64-msvc': 3.0.0
 
-  '@chainsafe/ssz@1.4.0':
+  '@chainsafe/ssz@1.6.2':
     dependencies:
       '@chainsafe/as-sha256': 1.2.4
-      '@chainsafe/persistent-merkle-tree': 1.2.5
+      '@chainsafe/persistent-merkle-tree': 1.3.0
 
   '@chainsafe/swap-or-not-shuffle-darwin-arm64@1.2.1':
     optional: true
@@ -5231,35 +5205,32 @@ snapshots:
       - babel-plugin-macros
       - conventional-commits-filter
 
-  '@lodestar/api@1.42.0(vitest@4.1.5(@types/node@24.12.2)(@vitest/browser-playwright@4.1.5)(@vitest/coverage-v8@4.1.5)(vite@6.4.2(@types/node@24.12.2)(yaml@2.8.4)))':
+  '@lodestar/api@1.46.0':
     dependencies:
-      '@chainsafe/persistent-merkle-tree': 1.2.5
-      '@chainsafe/ssz': 1.4.0
-      '@lodestar/config': 1.42.0(vitest@4.1.5(@types/node@24.12.2)(@vitest/browser-playwright@4.1.5)(@vitest/coverage-v8@4.1.5)(vite@6.4.2(@types/node@24.12.2)(yaml@2.8.4)))
-      '@lodestar/params': 1.42.0
-      '@lodestar/types': 1.42.0
-      '@lodestar/utils': 1.42.0
+      '@chainsafe/persistent-merkle-tree': 1.3.0
+      '@chainsafe/ssz': 1.6.2
+      '@lodestar/config': 1.46.0
+      '@lodestar/params': 1.46.0
+      '@lodestar/types': 1.46.0
+      '@lodestar/utils': 1.46.0
       eventsource: 2.0.2
       qs: 6.15.1
     transitivePeerDependencies:
       - '@vekexasia/bigint-uint8array'
-      - vitest
 
-  '@lodestar/config@1.42.0(vitest@4.1.5(@types/node@24.12.2)(@vitest/browser-playwright@4.1.5)(@vitest/coverage-v8@4.1.5)(vite@6.4.2(@types/node@24.12.2)(yaml@2.8.4)))':
+  '@lodestar/config@1.46.0':
     dependencies:
       '@chainsafe/as-sha256': 1.2.4
-      '@chainsafe/ssz': 1.4.0
-      '@lodestar/params': 1.42.0
-      '@lodestar/spec-test-util': 1.42.0(@chainsafe/ssz@1.4.0)(@lodestar/types@1.42.0)(vitest@4.1.5(@types/node@24.12.2)(@vitest/browser-playwright@4.1.5)(@vitest/coverage-v8@4.1.5)(vite@6.4.2(@types/node@24.12.2)(yaml@2.8.4)))
-      '@lodestar/types': 1.42.0
-      '@lodestar/utils': 1.42.0
+      '@chainsafe/ssz': 1.6.2
+      '@lodestar/params': 1.46.0
+      '@lodestar/types': 1.46.0
+      '@lodestar/utils': 1.46.0
     transitivePeerDependencies:
       - '@vekexasia/bigint-uint8array'
-      - vitest
 
-  '@lodestar/logger@1.42.0':
+  '@lodestar/logger@1.46.0':
     dependencies:
-      '@lodestar/utils': 1.42.0
+      '@lodestar/utils': 1.46.0
       triple-beam: 1.4.1
       winston: 3.19.0
       winston-daily-rotate-file: 4.7.1(winston@3.19.0)
@@ -5267,44 +5238,31 @@ snapshots:
     transitivePeerDependencies:
       - '@vekexasia/bigint-uint8array'
 
-  '@lodestar/params@1.42.0': {}
+  '@lodestar/params@1.46.0': {}
 
-  '@lodestar/spec-test-util@1.42.0(@chainsafe/ssz@1.4.0)(@lodestar/types@1.42.0)(vitest@4.1.5(@types/node@24.12.2)(@vitest/browser-playwright@4.1.5)(@vitest/coverage-v8@4.1.5)(vite@6.4.2(@types/node@24.12.2)(yaml@2.8.4)))':
-    dependencies:
-      '@chainsafe/ssz': 1.4.0
-      '@lodestar/types': 1.42.0
-      '@lodestar/utils': 1.42.0
-      rimraf: 4.4.1
-      snappyjs: 0.7.0
-      vitest: 4.1.5(@types/node@24.12.2)(@vitest/browser-playwright@4.1.5)(@vitest/coverage-v8@4.1.5)(vite@6.4.2(@types/node@24.12.2)(yaml@2.8.4))
-    transitivePeerDependencies:
-      - '@vekexasia/bigint-uint8array'
-
-  '@lodestar/state-transition@1.42.0(vitest@4.1.5(@types/node@24.12.2)(@vitest/browser-playwright@4.1.5)(@vitest/coverage-v8@4.1.5)(vite@6.4.2(@types/node@24.12.2)(yaml@2.8.4)))':
+  '@lodestar/state-transition@1.46.0':
     dependencies:
       '@chainsafe/as-sha256': 1.2.4
       '@chainsafe/blst': 2.2.0
-      '@chainsafe/persistent-merkle-tree': 1.2.5
-      '@chainsafe/persistent-ts': 1.0.3
+      '@chainsafe/persistent-merkle-tree': 1.3.0
       '@chainsafe/pubkey-index-map': 3.0.0
-      '@chainsafe/ssz': 1.4.0
+      '@chainsafe/ssz': 1.6.2
       '@chainsafe/swap-or-not-shuffle': 1.2.1
-      '@lodestar/config': 1.42.0(vitest@4.1.5(@types/node@24.12.2)(@vitest/browser-playwright@4.1.5)(@vitest/coverage-v8@4.1.5)(vite@6.4.2(@types/node@24.12.2)(yaml@2.8.4)))
-      '@lodestar/params': 1.42.0
-      '@lodestar/types': 1.42.0
-      '@lodestar/utils': 1.42.0
+      '@lodestar/config': 1.46.0
+      '@lodestar/params': 1.46.0
+      '@lodestar/types': 1.46.0
+      '@lodestar/utils': 1.46.0
       '@vekexasia/bigint-buffer2': 1.1.1
     transitivePeerDependencies:
       - '@vekexasia/bigint-uint8array'
-      - vitest
 
-  '@lodestar/types@1.42.0':
+  '@lodestar/types@1.46.0':
     dependencies:
-      '@chainsafe/ssz': 1.4.0
-      '@lodestar/params': 1.42.0
+      '@chainsafe/ssz': 1.6.2
+      '@lodestar/params': 1.46.0
       ethereum-cryptography: 2.2.1
 
-  '@lodestar/utils@1.42.0':
+  '@lodestar/utils@1.46.0':
     dependencies:
       '@chainsafe/as-sha256': 1.2.4
       '@vekexasia/bigint-buffer2': 1.1.1
@@ -6863,8 +6821,6 @@ snapshots:
     dependencies:
       minipass: 7.1.3
 
-  fs.realpath@1.0.0: {}
-
   fsevents@2.3.2:
     optional: true
 
@@ -6922,13 +6878,6 @@ snapshots:
       minimatch: 10.2.5
       minipass: 7.1.3
       path-scurry: 2.0.2
-
-  glob@9.3.5:
-    dependencies:
-      fs.realpath: 1.0.0
-      minimatch: 8.0.7
-      minipass: 4.2.8
-      path-scurry: 1.11.1
 
   gopd@1.2.0: {}
 
@@ -7344,10 +7293,6 @@ snapshots:
     dependencies:
       brace-expansion: 5.0.5
 
-  minimatch@8.0.7:
-    dependencies:
-      brace-expansion: 2.1.0
-
   minimatch@9.0.9:
     dependencies:
       brace-expansion: 2.1.0
@@ -7381,8 +7326,6 @@ snapshots:
   minipass@3.3.6:
     dependencies:
       yallist: 4.0.0
-
-  minipass@4.2.8: {}
 
   minipass@7.1.3: {}
 
@@ -7675,11 +7618,6 @@ snapshots:
 
   path-parse@1.0.7: {}
 
-  path-scurry@1.11.1:
-    dependencies:
-      lru-cache: 10.4.3
-      minipass: 7.1.3
-
   path-scurry@2.0.2:
     dependencies:
       lru-cache: 11.3.6
@@ -7878,10 +7816,6 @@ snapshots:
 
   rfdc@1.4.1: {}
 
-  rimraf@4.4.1:
-    dependencies:
-      glob: 9.3.5
-
   ripemd160@2.0.3:
     dependencies:
       hash-base: 3.1.2
@@ -8033,8 +7967,6 @@ snapshots:
       totalist: 3.0.1
 
   smart-buffer@4.2.0: {}
-
-  snappyjs@0.7.0: {}
 
   socks-proxy-agent@8.0.5:
     dependencies:
