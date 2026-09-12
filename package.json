@@ -34,7 +34,7 @@
     "@lerna-lite/publish": "^4.9.4",
     "@lerna-lite/run": "^4.9.4",
     "@lerna-lite/version": "^4.9.4",
-    "@lodestar/params": "^1.42.0",
+    "@lodestar/params": "1.47.0",
     "@types/node": "^24.10.1",
     "@typescript/native-preview": "7.0.0-dev.20260303.1",
     "@vitest/browser": "catalog:",
@@ -59,10 +59,5 @@
     "vite-plugin-top-level-await": "^1.6.0",
     "vitest": "catalog:",
     "vitest-when": "^0.9.0"
-  },
-  "resolutions": {
-    "dns-over-http-resolver": "^2.1.1",
-    "loupe": "^2.3.6",
-    "elliptic": ">=6.6.1"
   }
 }

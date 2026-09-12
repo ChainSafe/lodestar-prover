@@ -1,5 +1,5 @@
 import {describe, expect, it} from "vitest";
-import {ZERO_HASH} from "../../src/spec/utils.js";
+import {ZERO_HASH} from "@lodestar/params";
 import {normalizeMerkleBranch} from "../../src/utils/normalizeMerkleBranch.js";
 import {isValidMerkleBranch} from "../../src/utils/verifyMerkleBranch.js";
 import {computeMerkleBranch} from "../utils/utils.js";

@@ -1,4 +1,4 @@
-import {ZERO_HASH} from "../spec/utils.js";
+import {ZERO_HASH} from "@lodestar/params";
 
 export const SYNC_COMMITTEES_DEPTH = 4;
 export const SYNC_COMMITTEES_INDEX = 11;

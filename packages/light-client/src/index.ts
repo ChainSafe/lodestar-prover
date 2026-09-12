@@ -2,6 +2,11 @@ import mitt from "mitt";
 import {BeaconConfig, ChainForkConfig, createBeaconConfig} from "@lodestar/config";
 import {EPOCHS_PER_SYNC_COMMITTEE_PERIOD} from "@lodestar/params";
 import {
+  LightclientSpec,
+  ProcessUpdateOpts,
+  validateLightClientBootstrap,
+} from "@lodestar/state-transition/light-client";
+import {
   LightClientBootstrap,
   LightClientFinalityUpdate,
   LightClientHeader,
@@ -14,9 +19,6 @@ import {
 } from "@lodestar/types";
 import {fromHex, isErrorAborted, sleep, toRootHex} from "@lodestar/utils";
 import {LightclientEmitter, LightclientEvent} from "./events.js";
-import {LightclientSpec} from "./spec/index.js";
-import {ProcessUpdateOpts} from "./spec/processLightClientUpdate.js";
-import {validateLightClientBootstrap} from "./spec/validateLightClientBootstrap.js";
 import {LightClientTransport} from "./transport/interface.js";
 import {chunkifyInclusiveRange} from "./utils/chunkify.js";
 import {
@@ -29,9 +31,12 @@ import {
 } from "./utils/clock.js";
 import {ILcLogger, getConsoleLogger} from "./utils/logger.js";
 
+export {
+  upgradeLightClientFinalityUpdate,
+  upgradeLightClientOptimisticUpdate,
+} from "@lodestar/state-transition/light-client";
 // Re-export types
 export {LightclientEvent} from "./events.js";
-export {upgradeLightClientFinalityUpdate, upgradeLightClientOptimisticUpdate} from "./spec/utils.js";
 export type {SyncCommitteeFast} from "./types.js";
 
 export type GenesisData = {
