@@ -34,7 +34,7 @@
     "@lerna-lite/publish": "^4.9.4",
     "@lerna-lite/run": "^4.9.4",
     "@lerna-lite/version": "^4.9.4",
-    "@lodestar/params": "1.46.0",
+    "@lodestar/params": "1.47.0",
     "@types/node": "^24.10.1",
     "@typescript/native-preview": "7.0.0-dev.20260303.1",
     "@vitest/browser": "catalog:",
